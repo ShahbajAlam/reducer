@@ -1,35 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useReducer } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const initialState = {
+    value: 0,
+};
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+const reducer = (state, action) => {
+    //this "state" is previous state
+    // "action" is generally an object, passed by "dispatch"
+    
+    // if (action.type === "increaseby1") {
+    //     return { ...state, value: state.value + 1 };
+    // } else if (action.type === "decreaseby1") {
+    //     return { ...state, value: state.value - 1 };
+    // } else if (action.type === "increaseby5") {
+    //     return { ...state, value: state.value + 5 };
+    // } else if (action.type === "decreaseby5") {
+    //     return { ...state, value: state.value - 5 };
+    // } else {
+    //     return state;
+    // }
+    switch (action.type) {
+        case "increaseby1":
+            return { ...state, value: state.value + 1 };
+        case "decreaseby1":
+            return { ...state, value: state.value - 1 };
+        case "increaseby5":
+            return { ...state, value: state.value + 5 };
+        case "decreaseby5":
+            return { ...state, value: state.value - 5 };
+        default:
+            return state;
+    }
+};
 
-export default App
+const App = () => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    // "state" represents the current state
+    // we call "dispatch" to trigger a state update
+    // React automatically calls "reducer" after calling the dispatch
+    // reducer will update the state and return it
+    return (
+        <div>
+            <h1>Value is : {state.value}</h1>
+            <button
+                onClick={() => {
+                    dispatch({ type: "increaseby1" });
+                }}
+            >
+                Increase by 1
+            </button>
+            <button
+                onClick={() => {
+                    dispatch({ type: "decreaseby1" });
+                }}
+            >
+                Decrease by 1
+            </button>
+            <button
+                onClick={() => {
+                    dispatch({ type: "increaseby5" });
+                }}
+            >
+                Increase by 5
+            </button>
+            <button
+                onClick={() => {
+                    dispatch({ type: "decreaseby5" });
+                }}
+            >
+                Decrease by 5
+            </button>
+        </div>
+    );
+};
+
+export default App;
